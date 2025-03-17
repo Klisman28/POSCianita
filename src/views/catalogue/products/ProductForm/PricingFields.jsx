@@ -5,7 +5,7 @@ import { NumericFormat } from 'react-number-format'
 import { Field } from 'formik'
 
 const CurrencyInput = props => {
-	return <Input {...props} value={props.field.value} prefix="$" />
+	return <Input {...props} value={props.field.value} prefix="Q" />
 }
 
 // const TaxRateInput = props => {

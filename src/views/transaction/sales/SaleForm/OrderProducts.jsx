@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 import { AdaptableCard } from 'components/shared'
 import { Table, Avatar, Button, Input } from 'components/ui'
 import { NumericFormat } from 'react-number-format'
@@ -6,11 +6,12 @@ import { FiPackage } from 'react-icons/fi'
 import { HiMinusCircle, HiPlusCircle, HiTrash } from 'react-icons/hi'
 import { Controller } from 'react-hook-form'
 import { toast, Notification } from 'components/ui'
+import './store/OrderProducts.css';
+
 
 const { Tr, Th, Td, THead, TBody } = Table
 
 const MainColumn = ({ row }) => {
-
 	const avatar = row.img ? <Avatar src={row.img} /> : <Avatar icon={<FiPackage />} />
 
 	return (
@@ -29,44 +30,66 @@ const MainColumn = ({ row }) => {
 	)
 }
 
+// Componente para mostrar un valor monetario formateado
 const PriceAmount = ({ amount }) => {
 	return (
 		<NumericFormat
 			displayType="text"
 			value={(Math.round(amount * 100) / 100).toFixed(2)}
-			prefix={'S/'}
+			prefix={'Q '}
 			thousandSeparator={true}
 		/>
 	)
 }
 
-const OrderProducts = ({ errors, fields, remove, control, watch, handleChangeQuantity, setValue, getValues }) => {
+const OrderProducts = ({
+	errors,
+	fields,
+	remove,
+	control,
+	watch,
+	handleChangeQuantity,
+	setValue,
+	getValues
+}) => {
 
+	// *** Novedad: función para recalcular subtotal al cambiar PRECIO ***
+	const handleOnKeyUpPrice = (event, index) => {
+		const indexPrice = `products.${index}.price`
+		const value = parseFloat(event.target.value)
+		if (!isNaN(value)) {
+			// Actualiza el precio en el formulario
+			setValue(indexPrice, value)
+		}
+
+		// Recalcula el subtotal (precio * cantidad)
+		const qty = parseInt(getValues(`products.${index}.quantity`))
+		const subtotal = (value || 0) * (qty || 0)
+		setValue(`products.${index}.subtotal`, subtotal)
+	}
+
+	// Función existente para control de cantidad
 	const handleOnKeyUp = (event, index) => {
 		const stock = getValues(`products.${index}.stock`)
-		const indexText = `products.${index}.quantity`
+		const indexQuantity = `products.${index}.quantity`
 		const value = parseInt(event.target.value)
 
 		if (!isNaN(value)) {
 			if (value <= stock) {
-				setValue(indexText, value)
+				setValue(indexQuantity, value)
 			} else {
-				setValue(indexText, stock)
+				setValue(indexQuantity, stock)
 				toast.push(
 					<Notification title={"¡Stock Limitado!"} type="danger" duration={3000}>
-						La cantidad máxima que puede agregar es {stock} 
-					</Notification>
-					, {
-						placement: 'top-center'
-					}
+						La cantidad máxima que puede agregar es {stock}
+					</Notification>,
+					{ placement: 'top-center' }
 				)
 			}
-
-
-			const newQty = parseInt(getValues(indexText))
+			const newQty = parseInt(getValues(indexQuantity))
 			const price = parseFloat(getValues(`products.${index}.price`))
 			const subtotal = newQty * price
-			setValue(`products.${index}.subtotal`, subtotal);
+			setValue(`products.${index}.subtotal`, subtotal)
 		}
 	}
 
@@ -76,33 +99,57 @@ const OrderProducts = ({ errors, fields, remove, control, watch, handleChangeQua
 				<Table>
 					<THead className="!bg-transparent">
 						<Tr>
-							<Th>
-								PRODUCTO
-							</Th>
-							<Th>
-								COSTO
-							</Th>
-							<Th>
-								CANTIDAD
-							</Th>
-							<Th>
-								SUBTOTAL
-							</Th>
+							<Th>PRODUCTO</Th>
+							<Th>PRECIO</Th>
+							<Th>CANTIDAD</Th>
+							<Th>SUBTOTAL</Th>
 							<Th></Th>
 						</Tr>
 					</THead>
-					<TBody >
+					<TBody>
 						<>
 							{fields && fields.length > 0 ? fields.map((item, index) => {
-
 								return (
 									<Tr key={index}>
 										<Td>
 											<MainColumn row={item} />
 										</Td>
+
+										{/* *** Novedad: Input editable para el PRECIO *** */}
 										<Td>
-											<PriceAmount amount={item.price} />
+											<div className="relative w-20">
+
+												<span className="absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-500">
+													Q
+												</span>
+												<Controller
+													control={control}
+													name={`products.${index}.price`}
+													render={({ field: { onChange, value } }) => (
+														<Input
+															type="number"
+															step="0.01"
+															size="sm"
+															value={value}
+															onChange={onChange}
+															onKeyUp={(event) => handleOnKeyUpPrice(event, index)}
+															className="w-20 pl-6 no-spin border-0"
+															autoComplete="off"
+														/>
+													)}
+												/>
+												{errors.products && Array.isArray(errors.products) && (
+													<div className="text-red-500 text-xs text-left mt-1">
+														{
+															(errors.products[index]?.price?.type === 'typeError')
+																? 'Ingresar un número válido'
+																: errors.products[index]?.price?.message
+														}
+													</div>
+												)}
+											</div>
 										</Td>
+
 										<Td>
 											<div className="flex items-center space-x-1 justify-center">
 												<div
@@ -134,15 +181,21 @@ const OrderProducts = ({ errors, fields, remove, control, watch, handleChangeQua
 													<HiPlusCircle className='w-6 h-6' />
 												</div>
 											</div>
-											{(errors.products && Array.isArray(errors.products)) &&
-												< div className="text-red-500 text-xs text-left mt-1">
-													{(errors.products[index]?.quantity?.type === 'typeError') ? 'Ingresar un numero' : errors.products[index]?.quantity?.message}
+											{(errors.products && Array.isArray(errors.products)) && (
+												<div className="text-red-500 text-xs text-left mt-1">
+													{
+														(errors.products[index]?.quantity?.type === 'typeError')
+															? 'Ingresar un numero'
+															: errors.products[index]?.quantity?.message
+													}
 												</div>
-											}
+											)}
 										</Td>
+
 										<Td>
 											<PriceAmount amount={watch(`products.${index}.subtotal`)} />
 										</Td>
+
 										<Td>
 											<Button
 												shape="circle"
@@ -159,7 +212,7 @@ const OrderProducts = ({ errors, fields, remove, control, watch, handleChangeQua
 								<Tr>
 									<Td className="text-center" colSpan="5">
 										{errors.products &&
-											< div className="text-red-500 text-sm text-center mt-1">
+											<div className="text-red-500 text-sm text-center mt-1">
 												{errors.products.message}
 											</div>
 										}
@@ -171,7 +224,6 @@ const OrderProducts = ({ errors, fields, remove, control, watch, handleChangeQua
 				</Table>
 			</AdaptableCard>
 		</>
-
 	)
 }
 

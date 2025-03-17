@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo } from 'react'
 import { Badge } from 'components/ui'
 import { DataTableSimple } from 'components/shared'
-import { HiOutlineEye, HiOutlineTrash, HiOutlinePrinter } from 'react-icons/hi'
+import { HiOutlineEye, HiOutlineTrash, HiOutlinePrinter,HiOutlineReply  } from 'react-icons/hi'
 import { useDispatch, useSelector } from 'react-redux'
 import { getSales } from '../store/dataSlice'
 import { toggleDeleteConfirmation, setSelectedSale, setShowDialogOpen } from '../store/stateSlice'
@@ -38,6 +38,8 @@ const ActionColumn = ({ row }) => {
 	const onPrint = () => {
 		navigate(`/transacciones/ventas/${row.id}/imprimir`)
 	}
+	
+
 
 	return (
 		<div className="flex justify-end text-lg">
@@ -50,6 +52,7 @@ const ActionColumn = ({ row }) => {
 			<span className="cursor-pointer p-2 hover:text-red-500" onClick={onDelete}>
 				<HiOutlineTrash />
 			</span>
+			
 		</div>
 	)
 }
@@ -73,11 +76,11 @@ const ClientColumn = ({ row }) => {
 				<>
 					{row.type === 'Boleta' ?
 						<span>
-							{row.customer.fullname}
+							{row.customer?.fullname || 'CF'}
 						</span>
 						:
 						<span>
-							{row.enterprise.name}
+							{row.enterprise?.name || 'CF'}
 						</span>
 					}
 				</>
@@ -96,7 +99,7 @@ const CurrencyColumn = ({ value }) => {
 		<NumericFormat
 			displayType="text"
 			value={(Math.round(value * 100) / 100).toFixed(2)}
-			prefix={'S/'}
+			prefix={'Q '}
 			thousandSeparator={true}
 		/>
 	)
@@ -144,7 +147,7 @@ const SaleTable = () => {
 			}
 		},
 		{
-			Header: 'IGV',
+			Header: 'SAT',
 			accessor: 'igv',
 			sortable: true,
 			Cell: props => {
@@ -183,7 +186,9 @@ const SaleTable = () => {
 			Header: 'Acciones',
 			id: 'action',
 			accessor: (row) => row,
-			Cell: props => <ActionColumn row={props.row.original} />
+			Cell: props => 
+			<ActionColumn row={props.row.original} />
+			
 		}
 	], [])
 

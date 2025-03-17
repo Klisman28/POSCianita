@@ -5,7 +5,6 @@ import { Controller } from 'react-hook-form'
 const OptionsFields = ({ control }) => {
     return (
         <Card className="mb-4">
-            <h5 className="mb-4">Opciones de Compra</h5>
             <div className="flex items-center justify-between mb-6">
                 <Controller
                     control={control}

@@ -5,18 +5,19 @@ import * as Yup from 'yup'
 import BasicInfoFields from './BasicInfoFields'
 import ContactFields from './ContactFields'
 
-
 const validationSchema = Yup.object().shape({
     name: Yup.string()
         .required("El nombre es requerido")
         .min(4, "El nombre debe ser mayor a 3 caracteres")
-        .max(200, "el nombre no puede ser mayor a 100 caracteres"),
-    ruc: Yup.string(),
-    website: Yup.string(),
+        .max(200, "El nombre no puede ser mayor a 100 caracteres"),
+    ruc: Yup.string().notRequired().nullable(), // Campo NIT opcional
+    website: Yup.string().notRequired(),
     email: Yup.string()
-    .email("El email debe ser un correo electrónico válido"),
-    telephone: Yup.string(),
-    address: Yup.string()
+        .email("El email debe ser un correo electrónico válido")
+        .notRequired()
+        .nullable(), // Campo correo opcional
+    telephone: Yup.string().notRequired(),
+    address: Yup.string().notRequired()
 })
 
 const { TabNav, TabList, TabContent } = Tabs

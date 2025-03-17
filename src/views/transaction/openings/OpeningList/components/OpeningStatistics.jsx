@@ -38,7 +38,7 @@ const OpeningStatistic = ({data}) => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
             <StatisticCard
                 data={{ value: data.initBalance }}
-                valuePrefix="S/"
+                valuePrefix="Q"
                 label="Saldo Inicial"
                 tagSuffix="%"
                 // date={startDate}
@@ -46,7 +46,7 @@ const OpeningStatistic = ({data}) => {
             />
             <StatisticCard
                 data={{ value: saleBalance }}
-                valuePrefix="S/"
+                valuePrefix="Q "
                 label="Mis Ventas"
                 tagSuffix="%"
             // date={startDate}
@@ -54,7 +54,7 @@ const OpeningStatistic = ({data}) => {
             />
             <StatisticCard
                 data={{ value: totalAmount }}
-                valuePrefix="S/"
+                valuePrefix="Q "
                 label="Total a Rendir"
                 tagSuffix="%"
             // date={startDate}

@@ -104,40 +104,40 @@ const ProductTable = () => {
 			sortable: true,
 		},
 		{
-			Header: 'Cost',
+			Header: 'Costo',
 			accessor: 'cost',
 			sortable: true,
 			Cell: props => {
 				const { cost } = props.row.original
 				return (
 					<div className='flex items-center'>
-						<span className='text-xs'> S/ </span> {cost}
+						<span className='text-xs'> Q </span> {cost}
 					</div>
 				)
 			}
 		},
 		{
-			Header: 'Utility',
+			Header: 'Ganancia',
 			accessor: 'utility',
 			sortable: true,
 			Cell: props => {
 				const { utility } = props.row.original
 				return (
 					<div className='flex items-center'>
-						<span className='text-xs'> S/ </span> {utility}
+						<span className='text-xs'> Q </span> {utility}
 					</div>
 				)
 			}
 		},
 		{
-			Header: 'Price',
+			Header: 'Precio',
 			accessor: 'price',
 			sortable: true,
 			Cell: props => {
 				const { price } = props.row.original
 				return (
 					<div className='flex items-center'>
-						<span className='text-xs'> S/ </span> {price}
+						<span className='text-xs'> Q  </span> {price}
 					</div>
 				)
 			}

@@ -29,6 +29,14 @@ export async function apiPutSale(id, data) {
     return res
 }
 
+export async function apiReturnSale(id) {
+    const res = ApiService.fetchData({
+        url: `sales/devolucion/${id}`,
+        method: 'put'
+    })
+    return res
+}
+
 export async function apiDeleteSale(id) {
     const res = ApiService.fetchData({
         url: `/sales/${id}`,
