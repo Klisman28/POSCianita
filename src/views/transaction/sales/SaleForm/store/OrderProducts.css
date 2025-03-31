@@ -7,3 +7,25 @@
 .no-spin {
   -moz-appearance: textfield; /* Para Firefox */
 }
+/* En tu archivo global, por ejemplo: styles.css o index.css */
+
+@media print {
+  /* Ocultar botones cuando se imprima */
+  .hide-on-print {
+    display: none !important;
+  }
+
+  /* Ajustar la boleta para imprimir tipo recibo */
+  .receipt-layout {
+    width: 220mm; /* estilo de recibo */
+    font-family: 'Courier New', monospace; 
+    font-size: 12px; 
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Si necesitas romper página o ajustar márgenes, etc. */
+  @page {
+    margin: 10mm; /* Ajusta según necesites */
+  }
+}

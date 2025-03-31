@@ -38,6 +38,7 @@
     "react-scroll": "^1.8.3",
     "react-select": "^4.3.0",
     "react-table": "^7.7.0",
+    "react-to-print": "^2.14.15",
     "react-tooltip": "^4.2.21",
     "react-window": "^1.8.6",
     "redux": "^4.1.1",
@@ -48,16 +49,16 @@
     "yup": "^0.32.10"
   },
   "scripts": {
-  "start": "cross-env PORT=3005 react-scripts start",
-  "build": "npm run build:css && npm run react-scripts:build",
-  "test": "react-scripts test",
-  "eject": "react-scripts eject",
-  "build:css": "cross-env TAILWIND_MODE=build NODE_ENV=production postcss src/assets/styles/app.css -o src/index.css",
-  "watch:css": "cross-env TAILWIND_MODE=watch NODE_ENV=development postcss src/assets/styles/app.css -o src/index.css --watch",
-  "react-scripts:start": "delay 5 && react-scripts start",
-  "react-scripts:build": "react-scripts build",
-  "analyze": "source-map-explorer 'build/static/js/*.js'"
-},
+    "start": "cross-env PORT=3005 react-scripts start",
+    "build": "npm run build:css && npm run react-scripts:build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "build:css": "cross-env TAILWIND_MODE=build NODE_ENV=production postcss src/assets/styles/app.css -o src/index.css",
+    "watch:css": "cross-env TAILWIND_MODE=watch NODE_ENV=development postcss src/assets/styles/app.css -o src/index.css --watch",
+    "react-scripts:start": "delay 5 && react-scripts start",
+    "react-scripts:build": "react-scripts build",
+    "analyze": "source-map-explorer 'build/static/js/*.js'"
+  },
   "eslintConfig": {
     "extends": [
       "react-app",

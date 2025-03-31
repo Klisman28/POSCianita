@@ -1,24 +1,29 @@
-import React, { forwardRef } from 'react'
+import React, { useRef, useState } from 'react'
 import { FormContainer, Button, Card } from 'components/ui'
 import { StickyFooter } from 'components/shared'
-import BasicInfoFields from './BasicInfoFields'
-import OrderProducts from './OrderProducts'
 import { AiOutlineSave } from 'react-icons/ai'
 import * as Yup from 'yup'
-import { injectReducer } from 'store/index'
-import reducer from './store'
-import SearchProduct from './components/SearchProducts'
-import PaymentSummary from './components/PaymentSummary'
-import ProductsSidebar from './components/ProductsSidebar'
-import OptionsFields from './OptionsFields'
-import { useForm, useFieldArray } from 'react-hook-form'
-import { yupResolver } from '@hookform/resolvers/yup'
 import dayjs from 'dayjs'
 import { toast, Notification } from 'components/ui'
+import { useForm, useFieldArray } from 'react-hook-form'
+import { useReactToPrint } from 'react-to-print'
+import { yupResolver } from '@hookform/resolvers/yup'
+import BasicInfoFields from './BasicInfoFields'
+import OrderProducts from './OrderProducts'
+import SearchProduct from './components/SearchProducts'
+import PaymentSummary from './components/PaymentSummary'
+import ReceiptPrintView from '../shared/PrintBoleta'
+// import ProductsSidebar from './components/ProductsSidebar' // Si lo usas
+// import OptionsFields from './OptionsFields'               // Si lo usas
+
+import { injectReducer } from 'store/index'
+import reducer from './store'
 
 injectReducer('saleForm', reducer)
 
-// Esquema de validación
+
+
+// Esquema de validación para los productos
 const productsSchema = Yup.object({
     name: Yup.string(),
     brand: Yup.string(),
@@ -28,8 +33,9 @@ const productsSchema = Yup.object({
     price: Yup.number().required(),
     subtotal: Yup.number().required(),
     stock: Yup.number(),
-});
+})
 
+// Esquema de validación general
 const validationSchema = Yup.object().shape({
     serie: Yup.string().when('type', {
         is: (val) => val !== 'Ticket',
@@ -55,11 +61,18 @@ const validationSchema = Yup.object().shape({
     products: Yup.array().of(productsSchema).min(1, "Seleccione al menos un producto"),
     applyIgv: Yup.boolean(),
     dateIssue: Yup.date().required("La fecha es requerida")
-});
+})
 
-const SaleForm = forwardRef((props, ref) => {
+const SaleForm = (props) => {
     const { typeAction, initialData, onFormSubmit, onDiscard } = props
+    const printRef = useRef(null)
+    const [printData, setPrintData] = useState(null)
 
+    // Creamos la ref local para apuntar al <form> que se va a imprimir
+
+    // Ejemplo de data que quisieras imprimir
+   
+    // Inicializamos react-hook-form
     const {
         formState: { errors },
         handleSubmit,
@@ -79,7 +92,7 @@ const SaleForm = forwardRef((props, ref) => {
         name: 'products'
     })
 
-    // Manejo de cantidad
+    // Manejo de la cantidad de productos
     const handleChangeQuantity = (index, increse = true) => {
         const stock = getValues(`products.${index}.stock`)
         const qty = parseInt(getValues(`products.${index}.quantity`))
@@ -124,34 +137,57 @@ const SaleForm = forwardRef((props, ref) => {
                 stock: parseInt(product.stock)
             })
         } else {
+            // Si ya existe, incrementamos la cantidad
             handleChangeQuantity(index, true)
         }
     }
 
+    const handlePrint = useReactToPrint({
+        content: () => printRef.current,
+      })
+
+
+      const onClickPrint = () => {
+        const data = getValues()
+        // data.serie, data.number, data.client, etc.
+    
+        // Por ejemplo, usar la serie y número para el comprobante
+        // y el label de 'client' como clienteNombre
+        const newPrintData = {
+          comprobante: `${data.serie}-${data.number}`, // "001-1"
+          fecha: dayjs(data.dateIssue).format('DD/MM/YYYY'), // convierte la fecha al formato que quieras
+          clienteNombre: data.client?.label || 'Consumidor Final',
+          clienteRtn: data.client?.value || '0000000000000',
+          productos: data.products.map((p) => ({
+            cantidad: p.quantity,
+            precio: p.price,
+            descripcion: p.name,
+            total: p.subtotal,
+          })),
+          subtotal: data.products.reduce((acc, curr) => acc + curr.subtotal, 0),
+          total: data.products.reduce((acc, curr) => acc + curr.subtotal, 0),
+        }
+    
+        setPrintData(newPrintData)
+        handlePrint()
+    }
+    
+      
     return (
-        <form onSubmit={handleSubmit(onFormSubmit)} ref={ref}>
-            <FormContainer  className="mx-auto p-0 m-0 max-w-full">
+        <form onSubmit={handleSubmit(onFormSubmit)} >
+            <FormContainer className="mx-auto p-0 m-0 max-w-full">
+                {/* Contenedor principal con varias columnas */}
+                <div className="xl:flex">
 
-                {/* Contenedor principal con 3 columnas */}
-                <div className=" xl:flex ">
+                    {/* Panel lateral (opcional) */}
+                    {/* <ProductsSidebar handleAppendProduct={handleAppendProduct} /> */}
 
-                    {/* Columna izquierda: Panel de categorías y/o búsqueda   <div className="w-full xl:w-1/4">
-            <ProductsSidebar handleAppendProduct={handleAppendProduct} />
-          </div>
-*/}
-
-                    {/* Columna central: Búsqueda rápida, tabla de productos y opciones de pago */}
-
-                    <Card className="w-9/12 p-1 border border-gray-200 shadow-none">
-
-                        {/* Columna central: Búsqueda rápida, tabla de productos y opciones de pago */}
+                    <Card className="w-9/12 p-1 border border-gray-200 shadow-none receipt-layout">
+                        {/* Búsqueda rápida de productos */}
                         <SearchProduct handleAppendProduct={handleAppendProduct} />
 
                         <div className="flex flex-col">
-                            {/* Búsqueda rápida (si deseas mantenerla aparte del panel lateral) */}
-
-
-                            {/* Listado de productos seleccionados */}
+                            {/* Lista de productos en la orden */}
                             <div className="mb-4" style={{ minHeight: '225px' }}>
                                 <OrderProducts
                                     errors={errors}
@@ -165,15 +201,15 @@ const SaleForm = forwardRef((props, ref) => {
                                 />
                             </div>
 
-                            {/* Opciones e Impuestos (IGV) + Resumen de Pago */}
-                            <div className=" mt-4">
+                            {/* Opciones de IGV / Resumen de pago */}
+                            <div className="mt-4">
                                 <PaymentSummary control={control} watch={watch} />
                             </div>
                         </div>
                     </Card>
 
-                    {/* Columna derecha: Datos básicos del comprobante (tipo, número, fecha) */}
-                    <div className="w-1/4 xl:w-10/12">
+                    {/* Columna derecha: información básica del comprobante */}
+                    <div className="w-1/4 xl:w-10/12 hide-on-print">
                         <BasicInfoFields
                             control={control}
                             errors={errors}
@@ -189,7 +225,8 @@ const SaleForm = forwardRef((props, ref) => {
                     className="-mx-8 px-8 flex items-center justify-end py-4"
                     stickyClass="border-t bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700"
                 >
-                    <div className="md:flex items-center">
+                    <div className="md:flex items-center hide-on-print">
+                        {/* Botón Descartar */}
                         <Button
                             size="sm"
                             className="ltr:mr-3 rtl:ml-3"
@@ -198,6 +235,21 @@ const SaleForm = forwardRef((props, ref) => {
                         >
                             Descartar
                         </Button>
+
+                        {/* Botón para imprimir */}
+                        <Button
+                            size="sm"
+                            className="ltr:mr-3 rtl:ml-3"
+                            onClick={onClickPrint}
+                            type="button"
+                        >
+                            Imprimir
+                            <div style={{ display: 'none' }}>
+                                <ReceiptPrintView data={printData} ref={printRef} />
+                            </div>
+                        </Button>
+
+                        {/* Botón para guardar */}
                         <Button
                             size="sm"
                             variant="solid"
@@ -212,8 +264,9 @@ const SaleForm = forwardRef((props, ref) => {
             </FormContainer>
         </form>
     )
-})
+}
 
+// Valores por defecto
 SaleForm.defaultProps = {
     initialData: {
         serie: '001',
