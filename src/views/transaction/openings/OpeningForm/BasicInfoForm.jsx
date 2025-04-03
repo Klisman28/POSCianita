@@ -5,7 +5,7 @@ import { NumericFormat } from 'react-number-format'
 import { useSelector } from 'react-redux'
 
 const CurrencyInput = props => {
-	return <Input {...props} value={props.field.value} prefix="$" />
+	return <Input {...props} value={props.field.value} prefix="Q" />
 }
 
 const NumberFormatInput = ({ onValueChange, ...rest }) => {

@@ -18,8 +18,15 @@ const Home = () => {
         },
       },
       xaxis: { categories: [] },
+      
       title: {
         text: `Ventas en el tiempo - ${salesData.username} (${salesData.owner})`,
+      },
+      dataLabels: {
+        enabled: true,
+        formatter: function (val) {
+          return 'Q ' + val; // Agrega el signo de "Q" antes del valor
+        },
       },
       colors: ['#D3D3D3'],  // Gris claro para las barras
 
