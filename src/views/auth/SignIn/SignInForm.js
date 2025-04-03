@@ -44,8 +44,8 @@ const SignInForm = props => {
 			<Formik
 				// Remove this initial value
 				initialValues={{
-					username: 'admin', 
-					password: '123Qwe', 
+					username: '', 
+					password: '', 
 					rememberMe: true 
 				}}
 				validationSchema={validationSchema}
@@ -61,7 +61,7 @@ const SignInForm = props => {
 					<Form>
 						<FormContainer>
 							<FormItem
-								label="Usuario"
+								label="Login"
 								invalid={errors.username && touched.username}
 								errorMessage={errors.username}
 							>
@@ -74,7 +74,6 @@ const SignInForm = props => {
 								/>
 							</FormItem>
 							<FormItem
-								label="Contraseña"
 								invalid={errors.password && touched.password}
 								errorMessage={errors.password}
 							>

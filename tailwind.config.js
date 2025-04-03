@@ -1,5 +1,6 @@
-const flattenColorPalette = require('tailwindcss/lib/util/flattenColorPalette').default
-const safeListFile = 'safelist.txt'
+const flattenColorPalette = require('tailwindcss/lib/util/flattenColorPalette').default;
+const safeListFile = 'safelist.txt';
+
 module.exports = {
   mode: 'jit',
   content: [
@@ -43,7 +44,7 @@ module.exports = {
       ],
     },
     screens: {
-      xs: '576',
+      xs: '576px',
       sm: '640px',
       md: '768px',
       lg: '1024px',
@@ -51,6 +52,23 @@ module.exports = {
       '2xl': '1536px',
     },
     extend: {
+      animation: {
+        rotateCube: 'rotateCube 5s infinite linear', // Animación de rotación del cubo
+      },
+      keyframes: {
+        rotateCube: {
+          '0%': { transform: 'rotateY(0deg)' },
+          '100%': { transform: 'rotateY(360deg)' },
+        },
+      },
+      transform: {
+        'rotate-y-180': 'rotateY(180deg)',
+        'rotate-x-90': 'rotateX(90deg)',
+        '-rotate-x-90': 'rotateX(-90deg)',
+        'rotate-y-90': 'rotateY(90deg)',
+        '-rotate-y-90': 'rotateY(-90deg)',
+        translateZ: 'translateZ',
+      },
       typography: (theme) => ({
         DEFAULT: {
           css: {
@@ -63,7 +81,7 @@ module.exports = {
             color: theme('colors.gray.400'),
           },
         },
-      })
+      }),
     },
   },
   plugins: [
@@ -73,19 +91,15 @@ module.exports = {
 
       const colorMap = Object.keys(colors)
         .map(color => ({
-          [`.border-t-${color}`]: {borderTopColor: colors[color]},
-          [`.border-r-${color}`]: {borderRightColor: colors[color]},
-          [`.border-b-${color}`]: {borderBottomColor: colors[color]},
-          [`.border-l-${color}`]: {borderLeftColor: colors[color]},
+          [`.border-t-${color}`]: { borderTopColor: colors[color] },
+          [`.border-r-${color}`]: { borderRightColor: colors[color] },
+          [`.border-b-${color}`]: { borderBottomColor: colors[color] },
+          [`.border-l-${color}`]: { borderLeftColor: colors[color] },
         }));
       const utilities = Object.assign({}, ...colorMap);
 
       addUtilities(utilities, variants('borderColor'));
     },
-    // If your application does not require multiple theme selection,
-    // you can replace {color} to your theme color value
-    // this can drastically reduces the size of the output css file
-    // e.g 'text-{colors}' --> 'text-emerald'
     require('tailwind-safelist-generator')({
       path: safeListFile,
       patterns: [
@@ -106,6 +120,7 @@ module.exports = {
         'focus-within:border-{colors}',
         'dark:text-{colors}',
         'dark:hover:text-{colors}',
+        'dark:focus-within:ring-{colors}',
         'h-{height}',
         'w-{width}',
       ],
