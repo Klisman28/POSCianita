@@ -93,16 +93,15 @@ const BasicInfoFields = props => {
             >
                 <Field name="birthdate" placeholder="Fecha Nac...">
                     {({ field, form }) => (
-                        <DatePicker
-                            locale='es'
-                            // inputFormat="MMM, DD YYYY"
-                            field={field}
-                            form={form}
-                            value={field.value}                            
-                            onChange={(date) => {
-                                form.setFieldValue(field.name, date)
-                            }}
-                        />
+                       <DatePicker
+                       locale="es"
+                       selected={field.value}
+                       onChange={(date) => form.setFieldValue(field.name, date)}
+                       showYearDropdown  // Habilita la opción para seleccionar el año
+                       yearDropdownItemNumber={100} // Permite ver hasta 100 años en el selector
+                       scrollableYearDropdown  // Hace el selector de años desplazable
+                       placeholderText="Selecciona una fecha"
+                   />
                     )}
                 </Field>
             </FormItem>
