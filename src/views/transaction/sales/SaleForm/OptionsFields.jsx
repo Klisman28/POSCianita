@@ -11,7 +11,7 @@ const OptionsFields = ({ control }) => {
                     name="applyIgv"
                     render={({ field: { onChange, value } }) => (
                         <Checkbox onChange={onChange} value={value}>
-                            Aplicar IGV (5%)
+                            Aplicar SAT (5%)
                         </Checkbox>
                     )}
                 />

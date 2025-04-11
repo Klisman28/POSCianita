@@ -25,7 +25,7 @@ const PurchasNew = () => {
 
 		const subtotal = values.products.reduce((sum, element) => sum + element.subtotal, 0)
 		const subtotalRounded = Math.round(subtotal * 100) / 100
-		const taxValue = values.applyIgv ? Math.round((0.18 * subtotalRounded) * 100 ) /100 : 0
+		const taxValue = values.applyIgv ? Math.round((0.05 * subtotalRounded) * 100 ) /100 : 0
 		const total = values.applyIgv ? (taxValue + subtotalRounded) : subtotalRounded
 
 		const data = {

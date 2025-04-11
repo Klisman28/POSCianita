@@ -33,7 +33,7 @@ const PriceAmount = ({ amount }) => {
 		<NumericFormat
 			displayType="text"
 			value={(Math.round(amount * 100) / 100).toFixed(2)}
-			prefix={'S/'}
+			prefix={'Q/'}
 			thousandSeparator={true}
 		/>
 	)
@@ -87,7 +87,30 @@ const OrderProducts = ({ errors, fields, remove, control, watch, handleChangeQua
 											<MainColumn row={item} />
 										</Td>
 										<Td>
-											<PriceAmount amount={item.cost} />
+											<Controller
+												control={control}
+												name={`products.${index}.cost`}
+												render={({ field: { onChange, value } }) => (
+													<NumericFormat
+														thousandSeparator
+														decimalScale={2}
+														prefix={'Q '}
+														customInput={Input}
+														onValueChange={(values) => {
+															const { floatValue } = values
+															onChange(floatValue) // Actualiza el cost en React Hook Form
+
+															const quantityValue = parseInt(getValues(`products.${index}.quantity`), 10) || 0
+															const newSubtotal = quantityValue * (floatValue || 0)
+															setValue(`products.${index}.subtotal`, newSubtotal)
+														}}
+														value={value}
+														size="sm"
+														className="w-20"
+														autoComplete="off"
+													/>
+												)}
+											/>
 										</Td>
 										<Td>
 											<div className="flex items-center space-x-1 justify-center">

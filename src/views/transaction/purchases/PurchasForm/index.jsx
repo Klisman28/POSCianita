@@ -123,6 +123,8 @@ const PurchasForm = forwardRef((props, ref) => {
                             <div>
                                 <SearchProduct handleAppendProduct={handleAppendProduct} />
                             </div>
+                            <div className="mb-4 text-black" style={{ minHeight: '225px' }}>
+
                             <OrderProducts
                                 errors={errors}
                                 fields={fields}
@@ -133,6 +135,8 @@ const PurchasForm = forwardRef((props, ref) => {
                                 getValues={getValues}
                                 handleChangeQuantity={handleChangeQuantity}
                             />
+                                                        </div>
+
                             <div className="xl:grid grid-cols-2 gap-4">
                                 <OptionsFields control={control} />
                                 <PaymentSummary watch={watch} />
