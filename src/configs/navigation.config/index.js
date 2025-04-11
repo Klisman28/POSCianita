@@ -20,7 +20,7 @@ const navigationConfig = [
         path: '',
         title: 'Almacén',
         translateKey: 'nav.home',
-        icon: 'home',
+        icon: 'supplierIcon',
         type: NAV_ITEM_TYPE_TITLE,
         authority: [],
         subMenu: [
@@ -61,7 +61,7 @@ const navigationConfig = [
         path: '',
         title: 'Transacciones',
         translateKey: 'nav.home',
-        icon: 'home',
+        icon: 'transactionIcon',
         type: NAV_ITEM_TYPE_TITLE,
         authority: [],
         subMenu: [
@@ -122,7 +122,7 @@ const navigationConfig = [
         path: '',
         title: 'Catálogo',
         translateKey: 'nav.groupMenu.groupMenu',
-        icon: '',
+        icon: 'catalogueIcon',
         type: NAV_ITEM_TYPE_TITLE,
         authority: [],
         subMenu: [
@@ -173,7 +173,7 @@ const navigationConfig = [
         path: '',
         title: 'Clientes',
         translateKey: 'nav.groupMenu.groupMenu',
-        icon: '',
+        icon: 'groupsIcon',
         type: NAV_ITEM_TYPE_TITLE,
         authority: [],
         subMenu: [
@@ -204,7 +204,7 @@ const navigationConfig = [
         path: '',
         title: 'Organización',
         translateKey: 'nav.groupMenu.groupMenu',
-        icon: '',
+        icon: 'bisIcon',
         type: NAV_ITEM_TYPE_TITLE,
         authority: [],
         subMenu: [
@@ -234,6 +234,16 @@ const navigationConfig = [
                 title: 'Usuarios',
                 translateKey: 'nav.catalogueMenu.categories',
                 icon: 'usersIcon',
+                type: NAV_ITEM_TYPE_ITEM,
+                authority: [],
+                subMenu: []
+            },
+            {
+                key: 'organizationMenu.users',
+                path: '/notes',
+                title: 'Notas',
+                translateKey: 'nav.catalogueMenu.categories',
+                icon: 'salesOpeningNewIcon',
                 type: NAV_ITEM_TYPE_ITEM,
                 authority: [],
                 subMenu: []

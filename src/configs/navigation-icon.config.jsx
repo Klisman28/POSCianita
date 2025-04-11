@@ -18,7 +18,13 @@ import {
     HiOutlineUsers,
     HiOutlineUserCircle,
     HiOutlineLibrary,
-    HiOutlineCog
+    HiOutlineCog,
+    HiArchive,
+    HiUserGroup,
+    HiOfficeBuilding, 
+    HiCurrencyDollar,
+    HiCollection,
+
 } from 'react-icons/hi'
 // import {} from 'react-icons/hi'
 
@@ -45,9 +51,13 @@ const navigationIcon = {
 
     customersIcon: <HiOutlineUserGroup />,
     enterprisesIcon: <HiOutlineOfficeBuilding />,
-
+    groupsIcon: <HiOutlineShoppingBag />,
+    supplierIcon: <HiArchive/>,
     employeesIcon: <HiOutlineUsers />,
     suppliersIcon: <HiOutlineLibrary />,
+    transactionIcon: <HiCurrencyDollar />,
+    catalogueIcon: <HiOutlineCollection />,
+    bisIcon: <HiOutlineOfficeBuilding />,
     usersIcon: <HiOutlineUserCircle />,
 }
 

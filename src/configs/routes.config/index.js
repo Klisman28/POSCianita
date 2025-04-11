@@ -141,4 +141,10 @@ export const protectedRoutes = [
         component: React.lazy(() => import('views/transaction/configs/ConfigEdit')),
         authority: [],
     },
+    {
+        key: 'notes',
+        path: '/notes',
+        component: React.lazy(() => import('views/notes/NoteFields')),
+        authority: [],
+    },
 ]
