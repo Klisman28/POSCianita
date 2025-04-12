@@ -57,7 +57,6 @@ export async function apiGetProductUnits() {
 }
 
 export async function apiSearchProducts(query) {
-    console.log(query);
     const res = ApiService.fetchData({
         url: `/products/search?offset=0&limit=10&search=${query.search}`,
         method: 'get',

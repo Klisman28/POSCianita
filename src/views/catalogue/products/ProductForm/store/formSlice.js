@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { apiGetSubcategories } from 'services/catalogue/SubcategoryService'
 import { apiGetBrands } from 'services/catalogue/BrandService'
 import { apiGetProductUnits } from 'services/catalogue/ProductService'
+import { apiGetCategories } from 'services/catalogue/CategoryService'
 
 export const getSubategories = createAsyncThunk(
     'catalogue/products/getSubategories',
@@ -27,12 +28,22 @@ export const getProductUnits = createAsyncThunk(
     }
 )
 
+export const getCategories = createAsyncThunk(
+    'catalogue/products/getCategories',
+    async () => {
+      const response = await apiGetCategories()
+      return response.data
+    }
+  )
+
 const newSlice = createSlice({
     name: 'catalogue/products/data',
     initialState: {
         subcategoryList: [],
         brandList: [],
         unitList: [],
+        categoryList: [], // <-- Nuevo array donde guardarás las categorías
+
     },
     reducers: {},
     extraReducers: {
@@ -44,6 +55,10 @@ const newSlice = createSlice({
         },
         [getProductUnits.fulfilled]: (state, action) => {
             state.unitList = action.payload.data
+        },
+
+        [getCategories.fulfilled]: (state, action) => {
+            state.categoryList = action.payload.data.categories 
         },
     }
 })

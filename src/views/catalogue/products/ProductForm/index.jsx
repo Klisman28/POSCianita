@@ -13,7 +13,7 @@ import * as Yup from 'yup'
 import { useDispatch } from 'react-redux'
 import { injectReducer } from 'store/index'
 import reducer from './store'
-import { getSubategories, getBrands, getProductUnits } from './store/formSlice'
+import { getSubategories, getBrands, getProductUnits, getCategories } from './store/formSlice'
 
 const validationSchema = Yup.object().shape({
     sku: Yup.string()
@@ -57,6 +57,8 @@ const ProductForm = forwardRef((props, ref) => {
         dispatch(getSubategories())
         dispatch(getBrands())
         dispatch(getProductUnits())
+        dispatch(getCategories())
+
     }, [dispatch])
 
     return (
@@ -89,7 +91,7 @@ const ProductForm = forwardRef((props, ref) => {
                 {({ values, touched, errors }) => (
                     <Form>
                         <FormContainer>
-                            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                                 <div className="lg:col-span-2">
                                     <BasicInfoFields touched={touched} errors={errors} values={values} />
                                     <PricingFields touched={touched} errors={errors} values={values} />
@@ -100,23 +102,23 @@ const ProductForm = forwardRef((props, ref) => {
                                 </div>
                             </div>
                             <StickyFooter
-                                className="-mx-8 px-8 flex items-center justify-between py-4"
+                                className="-mx-8 px-8 flex items-center justify-end py-0"
                                 stickyClass="border-t bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700"
                             >
                                 {/* <div>
                                     {type === 'edit' && <DeleteProductButton onDelete={onDelete} />}
                                 </div> */}
-                                <div className="md:flex items-center">
+                                <div className="md:flex items-center ">
                                     <Button
-                                        size="sm"
+                                        size="md"
                                         className="ltr:mr-3 rtl:ml-3"
                                         onClick={() => onDiscard?.()}
                                         type="button"
                                     >
                                         Descartar
                                     </Button>
-                                    <Button
-                                        size="sm"
+                                    <Button 
+                                        size="md"
                                         variant="solid"
                                         loading={false}
                                         icon={<AiOutlineSave />}

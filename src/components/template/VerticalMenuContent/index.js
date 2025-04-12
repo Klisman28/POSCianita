@@ -129,7 +129,8 @@ const VerticalMenuContent = props => {
 
 	return (
 		<Menu
-			className="px-4 pb-4"
+			className="px-4 pb-4 border-0 "
+			style={{ border: 'none' }}      // Sobrescritura adicional (por si hace falta)
 			variant={navMode}
 			sideCollapsed={collapsed}
 			defaultActiveKeys={activedRoute?.key ? [activedRoute.key] : []}

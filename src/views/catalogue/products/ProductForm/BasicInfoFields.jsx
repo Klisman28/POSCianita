@@ -13,7 +13,7 @@ export const categories = [
     { label: 'Watches', value: 'watches' }
 ]
 
-const NumberInput = props => {
+const NumberInput = (props) => {
     return <Input {...props} value={props.field.value} />
 }
 
@@ -29,106 +29,103 @@ const NumberFormatInput = ({ onValueChange, ...rest }) => {
     )
 }
 
-const BasicInfoFields = props => {
+const BasicInfoFields = (props) => {
 
     const { values, touched, errors } = props
 
     const unitList = useSelector((state) => state.productForm.data.unitList)
 
-    const unitOptions = unitList.map((unit) => {
-        return {
-            value: unit.id,
-            label: `${unit.name} (${unit.symbol})`
-        }
-    })
-
+    const unitOptions = unitList.map((unit) => ({
+        value: unit.id,
+        label: `${unit.name} (${unit.symbol})`
+    }))
 
     return (
         <AdaptableCard className="mb-4" divider>
-            <h5>Información Básica</h5>
-            <p className="mb-6">Sección para configurar la información básica del producto</p>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div className="col-span-2">
+            <p className='mb-6 text-lg italic font-semibold text-dark dark:text-light'>Información General </p>
+
+            {/* Fila 1: Nombre de Producto y Código */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
                     <FormItem
-                        label="Nombre Producto"
+                        // Etiqueta con asterisco indicando que es obligatorio
+                        label="Nombre de Producto *"
                         invalid={errors.name && touched.name}
                         errorMessage={errors.name}
                     >
                         <Field
                             type="text"
-                            autoComplete="off"
                             name="name"
-                            placeholder="nombre de producto"
+                            autoComplete="off"
+                            placeholder="Ej. Televisor 40 pulgadas"
                             component={Input}
                         />
                     </FormItem>
                 </div>
-                <div className="col-span-1">
+                <div>
                     <FormItem
-                        label="Código"
+                        label="Código *"
                         invalid={errors.sku && touched.sku}
                         errorMessage={errors.sku}
                     >
                         <Field
                             type="text"
-                            autoComplete="off"
                             name="sku"
-                            placeholder="P001-M01-S01-C01"
+                            autoComplete="off"
+                            placeholder="Ej. SKU-1234"
                             component={Input}
                         />
                     </FormItem>
                 </div>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="col-span-1">
+
+            {/* Fila 2: Stock, Stock Mínimo y Unidad */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+                <div>
                     <FormItem
-                        label="Stock"
+                        label="Stock *"
                         invalid={errors.stock && touched.stock}
                         errorMessage={errors.stock}
                     >
                         <Field name="stock">
-                            {({ field, form }) => {
-                                return (
-                                    <NumberFormatInput
-                                        form={form}
-                                        field={field}
-                                        placeholder="Stock"
-                                        customInput={NumberInput}
-                                        onValueChange={e => {
-                                            form.setFieldValue(field.name, e.value)
-                                        }}
-                                    />
-                                )
-                            }}
+                            {({ field, form }) => (
+                                <NumberFormatInput
+                                    form={form}
+                                    field={field}
+                                    placeholder="Ej. 100"
+                                    customInput={NumberInput}
+                                    onValueChange={(e) => {
+                                        form.setFieldValue(field.name, e.value)
+                                    }}
+                                />
+                            )}
                         </Field>
                     </FormItem>
                 </div>
-                <div className="col-span-1">
+                <div>
                     <FormItem
-                        label="Stock Mínimo"
+                        label="Stock Mínimo *"
                         invalid={errors.stockMin && touched.stockMin}
                         errorMessage={errors.stockMin}
                     >
                         <Field name="stockMin">
-                            {({ field, form }) => {
-                                return (
-                                    <NumberFormatInput
-                                        form={form}
-                                        field={field}
-                                        placeholder="Stock"
-                                        customInput={NumberInput}
-                                        onValueChange={e => {
-                                            form.setFieldValue(field.name, e.value)
-                                        }}
-                                    />
-                                )
-                            }}
+                            {({ field, form }) => (
+                                <NumberFormatInput
+                                    form={form}
+                                    field={field}
+                                    placeholder="Ej. 10"
+                                    customInput={NumberInput}
+                                    onValueChange={(e) => {
+                                        form.setFieldValue(field.name, e.value)
+                                    }}
+                                />
+                            )}
                         </Field>
                     </FormItem>
                 </div>
-                <div className="col-span-1">
+                <div>
                     <FormItem
-                        label="Unidad"
+                        label="Unidad *"
                         invalid={errors.unitId && touched.unitId}
                         errorMessage={errors.unitId}
                     >
@@ -137,10 +134,14 @@ const BasicInfoFields = props => {
                                 <Select
                                     field={field}
                                     form={form}
-                                    placeholder="Seleccione una unidad..."
+                                    placeholder="Seleccione una unidad (p. ej. Cajas)"
                                     options={unitOptions}
-                                    value={unitOptions.filter(category => category.value === values.unitId)}
-                                    onChange={option => form.setFieldValue(field.name, option.value)}
+                                    value={unitOptions.filter(
+                                        (option) => option.value === values.unitId
+                                    )}
+                                    onChange={(option) =>
+                                        form.setFieldValue(field.name, option.value)
+                                    }
                                 />
                             )}
                         </Field>
