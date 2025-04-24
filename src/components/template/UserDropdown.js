@@ -17,6 +17,11 @@ export const UserDropdown = ({ className }) => {
 
 	const { signOut } = useAuth()
 
+	const handleSignOut = () => {
+		signOut();
+		// Recargar la página después de cerrar sesión
+	}
+
 	const UserAvatar = (
 		<div className={classNames(className, 'flex items-center gap-2')}>
 			<Avatar size={32} shape="circle" icon={<HiOutlineUser />} />
@@ -61,11 +66,11 @@ export const UserDropdown = ({ className }) => {
 					</Dropdown.Item>
 				))}
 				{/* <Dropdown.Item variant="divider" /> */}
-				<Dropdown.Item onClick={signOut} eventKey="Sign Out" className="gap-2">
+				<Dropdown.Item onClick={handleSignOut} eventKey="Sign Out" className="gap-2">
 					<span className="text-xl opacity-50">
 						<HiOutlineLogout />
 					</span>
-					<span>Carrar Sesión</span>
+					<span>Cerrar Sesión</span>
 				</Dropdown.Item>
 			</Dropdown>
 		</div>

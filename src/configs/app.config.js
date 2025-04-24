@@ -1,5 +1,5 @@
 const appConfig = {
-    apiDomain: 'http://localhost:3000',
+    apiDomain: 'http://backend-env.eba-ruzy6rnp.us-east-1.elasticbeanstalk.com',
     apiPrefix: '/api',
     apiVersion: '/v1',
     authenticatedEntryPath: '/home',

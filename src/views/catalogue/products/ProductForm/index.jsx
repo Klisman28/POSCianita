@@ -141,7 +141,7 @@ ProductForm.defaultProps = {
         name: '',
         sku: '',
         // img: '',
-        // imgList: [],
+         imgList: [],
         cost: '',
         utility: '',
         price: '',
