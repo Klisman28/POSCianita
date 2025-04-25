@@ -1,5 +1,5 @@
 const appConfig = {
-    apiDomain: 'http://backend-env.eba-ruzy6rnp.us-east-1.elasticbeanstalk.com',
+    apiDomain: 'https://www.cianitasublimados.com',
     apiPrefix: '/api',
     apiVersion: '/v1',
     authenticatedEntryPath: '/home',
