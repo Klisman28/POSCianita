@@ -1,5 +1,5 @@
 const appConfig = {
-    apiDomain: 'https://www.cianitasublimados.com',
+    apiDomain: 'https://backendcianita.onrender.com',
     apiPrefix: '/api',
     apiVersion: '/v1',
     authenticatedEntryPath: '/home',
