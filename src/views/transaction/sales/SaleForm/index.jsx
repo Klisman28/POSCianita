@@ -177,18 +177,17 @@ const SaleForm = (props) => {
         <form onSubmit={handleSubmit(onFormSubmit)} >
             <FormContainer className="mx-auto p-0 m-0 max-w-full">
                 {/* Contenedor principal con varias columnas */}
-                <div className="xl:flex">
+                <div className="lg:flex lg:gap-6">
 
                     {/* Panel lateral (opcional) */}
                     {/* <ProductsSidebar handleAppendProduct={handleAppendProduct} /> */}
 
-                    <Card className="w-9/12 p-1 border border-gray-200 shadow-none receipt-layout">
-                        {/* Búsqueda rápida de productos */}
+                    <Card  className="   w-full md:w-11/12 lg:w-9/12    p-3 lg:p-4  border border-gray-200shadow-none receipt-layout  *:first-letter:mx-auto  ">                        {/* Búsqueda rápida de productos */}
                         <SearchProduct handleAppendProduct={handleAppendProduct} />
 
-                        <div className="flex flex-col">
+                        <div className="flex flex-col ">
                             {/* Lista de productos en la orden */}
-                            <div className="mb-4" style={{ minHeight: '225px' }}>
+                            <div className="mb-4 lg:mb-0  overflow-y-auto min-h-[225px]   " style={{ minHeight: '225px' }}>
                                 <OrderProducts
                                     errors={errors}
                                     fields={fields}
@@ -202,14 +201,14 @@ const SaleForm = (props) => {
                             </div>
 
                             {/* Opciones de IGV / Resumen de pago */}
-                            <div className="mt-4">
+                            <div className="lg:w-80 flex-shrink-0">
                                 <PaymentSummary control={control} watch={watch} />
                             </div>
                         </div>
                     </Card>
 
                     {/* Columna derecha: información básica del comprobante */}
-                    <div className="w-1/4 xl:w-10/12 hide-on-print">
+                    <div className="2xl:w-10/12 xxl:w-10/12 sm:w-1/2    md:w-10/12    lg:w-10/12   flex-none hide-on-print  px-0 sm:px-2  ">
                         <BasicInfoFields
                             control={control}
                             errors={errors}
@@ -225,11 +224,11 @@ const SaleForm = (props) => {
                     className="-mx-8 px-8 flex items-center justify-end py-4"
                     stickyClass="border-t bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700"
                 >
-                    <div className="md:flex items-center hide-on-print">
+                    <div className="md:flex sm:flex-row sm:flex-wrap items-center hide-on-print">
                         {/* Botón Descartar */}
                         <Button
                             size="sm"
-                            className="ltr:mr-3 rtl:ml-3"
+                            className="ltr:mr-1 rtl:ml-1"
                             onClick={() => onDiscard?.()}
                             type="button"
                         >
@@ -239,7 +238,7 @@ const SaleForm = (props) => {
                         {/* Botón para imprimir */}
                         <Button
                             size="sm"
-                            className="ltr:mr-3 rtl:ml-3"
+                            className="ltr:mr-1 rtl:ml-1"
                             onClick={onClickPrint}
                             type="button"
                         >
