@@ -33,10 +33,19 @@ const validationSchema = Yup.object().shape({
     stock: Yup.number()
         .required('Stock es requerido')
         .integer('Por favor ingrese un número entero'),
+    hasExpiration: Yup.boolean().notRequired(),
+    expirationDate: Yup.string()
+    .when('hasExpiration', {
+      is: true,
+      then: (s) =>
+        s.required('Fecha de expiración requerida')
+         .matches(/^\d{4}-\d{2}-\d{2}$/, 'Formato YYYY‑MM‑DD'),
+      otherwise: (s) => s.notRequired().nullable(),
+    }),
     stockMin: Yup.number()
         .required('Stock mínimo es requerido')
         .integer('Por favor ingrese un número entero'),
-    // imageUrl: Yup.string(),
+     imageUrl: Yup.string(). nullable().notRequired(),
     subcategoryId: Yup.string()
         .required('Por favor seleccione subcategoría'),
     brandId: Yup.string()
@@ -73,7 +82,6 @@ const ProductForm = forwardRef((props, ref) => {
                 onSubmit={(values, { setSubmitting }) => {
                     if (typeAction === 'edit') {
                         delete values.id
-                        delete values.imageUrl
                     }
                     onFormSubmit?.(values, setSubmitting)
                 }}
@@ -140,8 +148,8 @@ ProductForm.defaultProps = {
     initialData: {
         name: '',
         sku: '',
-        // img: '',
-         imgList: [],
+        img: '',
+        imgList: [],
         cost: '',
         utility: '',
         price: '',
@@ -150,6 +158,10 @@ ProductForm.defaultProps = {
         subcategoryId: '',
         brandId: '',
         unitId: '',
+        imageUrl:'',
+        hasExpiration: false,      // ← booleano
+        expirationDate: ''         // ← string ISO (YYYY‑MM‑DD) o ''
+
     },
     typeAction: 'create'
 }
