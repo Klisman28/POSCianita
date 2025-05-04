@@ -178,8 +178,8 @@ const BasicInfoFields = (props) => {
                                     form.setFieldValue('expirationDate', '');  // Resetea la fecha cuando se apaga
                                 }
                             }}
-                            checkedContent="Si"
-                            unCheckedContent="No"
+                            checkedContent="No"
+                            unCheckedContent="Si"
                         />
                     )}
                 </Field>

@@ -5,7 +5,7 @@ import { Form, Formik } from 'formik'
 import BasicInfoFields from './BasicInfoFields'
 import PricingFields from './PricingFields'
 import OrganizationFields from './OrganizationFields'
-// import ProductImages from './ProductImages'
+import ProductImages from './ProductImages'
 // import cloneDeep from 'lodash/cloneDeep'
 // import { HiOutlineTrash } from 'react-icons/hi'
 import { AiOutlineSave } from 'react-icons/ai'
@@ -80,6 +80,9 @@ const ProductForm = forwardRef((props, ref) => {
 
                 validationSchema={validationSchema}
                 onSubmit={(values, { setSubmitting }) => {
+                    if (values.typeAction === 'create' && values.imgList.length > 0) {
+                        values.imageUrl = values.imgList[0].img
+                      }
                     if (typeAction === 'edit') {
                         delete values.id
                     }
@@ -106,7 +109,7 @@ const ProductForm = forwardRef((props, ref) => {
                                     <OrganizationFields touched={touched} errors={errors} values={values} />
                                 </div>
                                 <div className="lg:col-span-1">
-                                    {/* <ProductImages touched={touched} errors={errors} values={values} /> */}
+                                     <ProductImages touched={touched} errors={errors} values={values} />
                                 </div>
                             </div>
                             <StickyFooter

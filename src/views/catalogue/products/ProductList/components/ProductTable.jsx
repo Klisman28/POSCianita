@@ -46,7 +46,7 @@ const ActionColumn = ({ row }) => {
 
 const CategoryColumn = ({ row }) => {
 
-	const avatar = row.img ? <Avatar src={row.img} /> : <Avatar icon={<FiPackage />} />
+	const avatar = row.imageUrl ? <Avatar src={row.imageUrl} /> : <Avatar icon={<FiPackage />} />
 
 	return (
 		<div className="flex items-center">
@@ -106,6 +106,7 @@ const ProductTable = () => {
 	}
 
 	const columns = useMemo(() => [
+		
 		{
 			Header: 'Producto',
 			accessor: 'name',
@@ -218,6 +219,40 @@ const ProductTable = () => {
 				)
 			},
 		},
+		{
+			Header: 'Fecha de Vencimiento',
+			accessor: 'expirationDate',
+			sortable: true,
+			Cell: (props) => {
+			  const { expirationDate, hasExpiration } = props.row.original
+		  
+			  // Si el producto no requiere fecha de vencimiento
+			  if (!hasExpiration) {
+				return ''
+			  }
+		  
+			  // Convertir la fecha a objeto Date
+			  const dateValue = new Date(expirationDate)
+			  // Fecha actual (solo día, mes, año):
+			  const today = new Date()
+			  today.setHours(0, 0, 0, 0)
+		  
+			  // Revisar si está vencido
+			  const isExpired = dateValue < today
+		  
+			  // Clases Tailwind para darle estilo
+			  const baseClasses = 'px-2 py-1 rounded-md font-semibold'
+			  const expiredClasses = 'text-red-600 bg-red-100'
+			  const validClasses = 'text-green-600 bg-green-100'
+		  
+			  return (
+				<span className={`${baseClasses} ${isExpired ? expiredClasses : validClasses}`}>
+				  {expirationDate}
+				</span>
+			  )
+			}
+		  },
+		  
 
 		{
 			Header: 'Acciones',
