@@ -13,6 +13,7 @@ import { toast, Notification } from 'components/ui'
 export const SearchProducts = ({ handleAppendProduct, children }) => {
 
     const [searchDialogOpen, setSearchDialogOpen] = useState(false)
+        const [productCode, setProductCode] = useState("") // Variable para el código del producto
     const productList = useSelector((state) => state.saleForm.data.productList)
 
     const dispatch = useDispatch()
@@ -28,8 +29,33 @@ export const SearchProducts = ({ handleAppendProduct, children }) => {
         await dispatch(searchProducts({ search: query }))
     }
 
+    const handleMultipleChanges = (e) => {
+    handleSearch(e); // La función original
+    // Aquí puedes agregar cualquier otra función que necesites
+    handleCodeInput(e); // Otra función adicional
+};
     const handleSearch = (e) => {
         debounceFn(e.target.value)
+    }
+
+    useEffect(() => {
+        if (searchDialogOpen) {
+            const timeout = setTimeout(() => inputRef.current?.focus(), 100)
+            return () => clearTimeout(timeout)
+        }
+    }, [searchDialogOpen])
+
+      const handleCodeInput = (e) => {
+        const code = e.target.value
+        setProductCode(code)
+
+        if (code) {
+            const foundProduct = productList.find((product) => product.sku === code) // Buscar por SKU
+            if (foundProduct) {
+                handleAppendProduct(foundProduct) // Agregar automáticamente al carrito
+                setSearchDialogOpen(false) // Cerrar el diálogo
+            }
+        }
     }
 
     useEffect(() => {
@@ -55,10 +81,7 @@ export const SearchProducts = ({ handleAppendProduct, children }) => {
 
     return (
         <>
-            {/* 
-               children -> será un nodo que, al hacer clic, dispara el diálogo. 
-               Por defecto, si no pasas nada en children, se usa el bloque div para "Agregar Producto..."
-            */}
+            {/* Botón de búsqueda */}
             <div onClick={handleSearchOpen}>
                 {children || (
                     <div
@@ -70,7 +93,7 @@ export const SearchProducts = ({ handleAppendProduct, children }) => {
                 )}
             </div>
 
-            {/* Diálogo para la búsqueda */}
+            {/* Diálogo de búsqueda */}
             <Dialog
                 contentClassName="p-0"
                 isOpen={searchDialogOpen}
@@ -79,17 +102,16 @@ export const SearchProducts = ({ handleAppendProduct, children }) => {
                 width={800}
             >
                 <div>
-                    {/* Encabezado con campo de búsqueda */}
+                    {/* Campo de búsqueda */}
                     <div className="px-4 flex items-center justify-between border-b border-gray-200 dark:border-gray-600">
                         <div className="flex items-center flex-1">
                             <HiOutlineSearch className="text-xl mr-2 text-gray-600 dark:text-gray-300" />
                             <input
                                 ref={inputRef}
-                                className="ring-0 outline-none block w-full p-3
-                                           text-base bg-transparent text-gray-900
-                                           dark:text-gray-100"
+                                className="ring-0 outline-none block w-full p-3 text-base bg-transparent text-gray-900 dark:text-gray-100"
                                 placeholder="Buscar productos..."
-                                onChange={handleSearch}
+                                onChange={handleMultipleChanges}
+
                             />
                         </div>
                         <Button size="xs" onClick={handleSearchClose}>
@@ -102,9 +124,7 @@ export const SearchProducts = ({ handleAppendProduct, children }) => {
                         {productList.map((product) => (
                             <div
                                 key={product.id}
-                                className="flex items-center gap-3 p-3 mb-2 bg-gray-50 
-                                           dark:bg-gray-700/60 rounded-lg hover:bg-gray-100 
-                                           dark:hover:bg-gray-700/90 cursor-pointer"
+                                className="flex items-center gap-3 p-3 mb-2 bg-gray-50 dark:bg-gray-700/60 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700/90 cursor-pointer"
                                 onClick={() => handleClick(product)}
                             >
                                 {/* Imagen del producto */}
@@ -114,9 +134,8 @@ export const SearchProducts = ({ handleAppendProduct, children }) => {
                                     className="h-12 w-12 object-contain rounded-md"
                                 />
 
-                                {/* Información principal del producto */}
+                                {/* Información del producto */}
                                 <div className="flex flex-col sm:flex-row sm:items-center justify-between w-full">
-                                    {/* Nombre y marca */}
                                     <div>
                                         <Highlighter
                                             autoEscape
@@ -135,115 +154,30 @@ export const SearchProducts = ({ handleAppendProduct, children }) => {
                                         </div>
                                     </div>
 
-                                    {/* Precio, Stock y Carrito */}
                                     <div className="flex items-center gap-3 mt-2 sm:mt-0">
                                         <span className="text-gray-900 dark:text-gray-100 font-medium">
                                             Q {product.price}
                                         </span>
+
+                                        {/* Etiqueta de Stock o Agotado */}
                                         {product.stock > 0 ? (
-                                            <Tag className="bg-emerald-100 text-emerald-600 
-                                                           dark:bg-emerald-500/20 dark:text-emerald-100
-                                                           rounded-md border-0"
-                                            >
+                                            <Tag className="bg-emerald-100 text-emerald-600 dark:bg-emerald-500/20 dark:text-emerald-100 rounded-md border-0">
                                                 Stock: {product.stock} {product.unit.symbol}
                                             </Tag>
                                         ) : (
-                                            <Tag className="bg-red-200 text-red-600 
-                                                           dark:bg-red-500/20 dark:text-red-100
-                                                           rounded-md border-0"
-                                            >
+                                            <Tag className="bg-red-200 text-red-600 dark:bg-red-500/20 dark:text-red-100 rounded-md border-0">
                                                 Agotado
                                             </Tag>
                                         )}
-
                                     </div>
-                                    {/* Fecha vencimiento, Stock y Carrito */}
-                                    {/* Fecha vencimiento, Stock y Carrito */}
-<div className="flex items-center gap-3 mt-2 sm:mt-0">
-  
-  {/* 1) Renderizar la fecha SOLO si el producto tiene fecha de vencimiento */}
-  {product.hasExpiration ? (() => {
-    const dateValue = new Date(product.expirationDate)
-    const today = new Date()
-    today.setHours(0, 0, 0, 0) // Para comparar solo día/mes/año
 
-    const isExpired = dateValue < today
-
-    // Clases de Tailwind para fecha válida o expirada
-    const baseClasses = 'px-2 py-1 rounded-md font-semibold'
-    const expiredClasses = 'text-red-600 bg-red-100'
-    const validClasses = 'text-green-600 bg-green-100'
-
-    return (
-      <span className={`${baseClasses} ${isExpired ? expiredClasses : validClasses}`}>
-        {product.expirationDate}
-      </span>
-    )
-  })() : null}
-
-  {/* 2) Mostrar "Expirado" si la fecha está vencida; de lo contrario, mostrar Stock/Agotado */}
-  {product.hasExpiration ? (() => {
-    const dateValue = new Date(product.expirationDate)
-    const today = new Date()
-    today.setHours(0, 0, 0, 0)
-
-    const isExpired = dateValue < today
-    if (isExpired) {
-      // Producto con fecha vencida
-      return (
-        <Tag className="bg-red-200 text-red-600 
-                       dark:bg-red-500/20 dark:text-red-100
-                       rounded-md border-0"
-        >
-          Expirado
-        </Tag>
-      )
-    } else {
-      // Producto con fecha válida: revisar stock
-      return product.stock > 0 ? (
-        <Tag className="bg-emerald-100 text-emerald-600 
-                       dark:bg-emerald-500/20 dark:text-emerald-100
-                       rounded-md border-0"
-        >
-          Stock: {product.stock} {product.unit.symbol}
-        </Tag>
-      ) : (
-        <Tag className="bg-red-200 text-red-600 
-                       dark:bg-red-500/20 dark:text-red-100
-                       rounded-md border-0"
-        >
-          Agotado
-        </Tag>
-      )
-    }
-  })() : (
-    // 3) Si NO requiere fecha de vencimiento, solo gestionamos stock
-    product.stock > 0 ? (
-      <Tag className="bg-emerald-100 text-emerald-600 
-                     dark:bg-emerald-500/20 dark:text-emerald-100
-                     rounded-md border-0"
-      >
-        Stock: {product.stock} {product.unit.symbol}
-      </Tag>
-    ) : (
-      <Tag className="bg-red-200 text-red-600 
-                     dark:bg-red-500/20 dark:text-red-100
-                     rounded-md border-0"
-      >
-        Agotado
-      </Tag>
-    )
-  )}
-
-  {/* Ícono de carrito */}
-  <HiShoppingCart className={classNames(textTheme, 'text-lg')} />
-</div>
-
+                                    {/* Ícono de carrito */}
+                                    <HiShoppingCart className={classNames(textTheme, 'text-lg')} />
                                 </div>
                             </div>
                         ))}
 
-                        {/* Mensaje de sin resultados */}
+                        {/* Mensaje cuando no hay resultados */}
                         {productList.length === 0 && (
                             <div className="my-10 text-center text-amber-500 text-sm flex items-center justify-center space-x-2">
                                 <FiAlertTriangle className="h-4 w-4" />

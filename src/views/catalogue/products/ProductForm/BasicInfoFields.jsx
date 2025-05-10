@@ -100,6 +100,22 @@ const BasicInfoFields = (props) => {
                 </FormItem>
             </div>
 
+            {/* Fila 4: Descripción del Producto */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                <FormItem
+                    label="Descripción del Producto"
+                    invalid={errors.description && touched.description}
+                    errorMessage={errors.description}
+                >
+                    <Field
+                        type="text"
+                        name="description"
+                        autoComplete="off"
+                        placeholder="Descripción detallada del producto"
+                        component={Input}
+                    />
+                </FormItem>
+            </div>
             {/* Fila 2: Stock, Stock Mínimo, Unidad */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
                 <FormItem
@@ -184,49 +200,50 @@ const BasicInfoFields = (props) => {
                     )}
                 </Field>
             </FormItem>
-          {/* Fila 3: Expiración (opcional) */}
-{values.hasExpiration && (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-        <FormItem
-            label="Fecha de expiración *"
-            invalid={errors.expirationDate && touched.expirationDate}
-            errorMessage={errors.expirationDate}
-        >
-            <Field name="expirationDate">
-                {({ field, form }) => (
-                    <Input
-                        {...field}
-                        ref={dateRef}
-                        type="date"
-                        placeholder="YYYY‑MM‑DD"
-                        onChange={(e) =>
-                            form.setFieldValue('expirationDate', e.target.value)
-                        }
-                        className={`${
-                            statusExpiration === 'Vencido' 
-                                ? 'border-red-500'  // Color de borde para vencido
-                                : 'border-emerald-500' // Color de borde para vigente
-                        } border-2 p-2 rounded-md`} // Borde y padding ajustado
-                    />
-                )}
-            </Field>
-        </FormItem>
+            {/* Fila 3: Expiración (opcional) */}
+            {values.hasExpiration && (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                    <FormItem
+                        label="Fecha de expiración *"
+                        invalid={errors.expirationDate && touched.expirationDate}
+                        errorMessage={errors.expirationDate}
+                    >
+                        <Field name="expirationDate">
+                            {({ field, form }) => (
+                                <Input
+                                    {...field}
+                                    ref={dateRef}
+                                    type="date"
+                                    placeholder="YYYY‑MM‑DD"
+                                    onChange={(e) =>
+                                        form.setFieldValue('expirationDate', e.target.value)
+                                    }
+                                    className={`${statusExpiration === 'Vencido'
+                                            ? 'border-red-500'  // Color de borde para vencido
+                                            : 'border-emerald-500' // Color de borde para vigente
+                                        } border-2 p-2 rounded-md`} // Borde y padding ajustado
+                                />
+                            )}
+                        </Field>
+                    </FormItem>
 
-        <div className="flex items-end">
-            {statusExpiration && (
-                <Badge
-                    className={`w-8 h-8 flex items-center justify-center text-xs font-bold rounded-full ${statusExpiration === 'Vencido'
-                        ? 'bg-red-500'
-                        : 'bg-emerald-500'
-                        } text-white`}
-                >
-                    {statusExpiration === 'Vencido' ? 'V' : 'N'} {/* Usar solo la inicial para ahorrar espacio */}
-                </Badge>
+                    <div className="flex items-end">
+                        {statusExpiration && (
+                            <Badge
+                                className={`w-8 h-8 flex items-center justify-center text-xs font-bold rounded-full ${statusExpiration === 'Vencido'
+                                    ? 'bg-red-500'
+                                    : 'bg-emerald-500'
+                                    } text-white`}
+                            >
+                                {statusExpiration === 'Vencido' ? 'V' : 'N'} {/* Usar solo la inicial para ahorrar espacio */}
+                            </Badge>
+                        )}
+                    </div>
+
+                </div>
             )}
-        </div>
 
-    </div>
-)}
+
 
         </AdaptableCard>
     )

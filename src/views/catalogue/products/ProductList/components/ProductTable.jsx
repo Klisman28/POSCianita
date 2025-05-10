@@ -106,11 +106,12 @@ const ProductTable = () => {
 	}
 
 	const columns = useMemo(() => [
-		
+
 		{
 			Header: 'Producto',
 			accessor: 'name',
 			sortable: true,
+
 			Cell: props => {
 				const row = props.row.original
 				return <CategoryColumn row={row} />
@@ -119,22 +120,28 @@ const ProductTable = () => {
 		{
 			Header: 'SKU',
 			accessor: 'sku',
-			sortable: true,
+		},
+		{
+			Header: 'Descripción',
+			accessor: 'description', // Columna de descripción agregada
+			Cell: props => {
+				const { description } = props.row.original
+				return (
+					<div className="text-xs text-gray-600">{description}</div>
+				)
+			}
 		},
 		{
 			Header: 'Marca',
 			accessor: 'brand.name',
-			sortable: true,
 		},
 		{
 			Header: 'Subcategoría',
 			accessor: 'subcategory.name',
-			sortable: true,
 		},
 		{
 			Header: 'Costo',
 			accessor: 'cost',
-			sortable: true,
 			Cell: props => {
 				const { cost } = props.row.original
 				return (
@@ -147,7 +154,6 @@ const ProductTable = () => {
 		{
 			Header: 'Ganancia',
 			accessor: 'utility',
-			sortable: true,
 			Cell: props => {
 				const { utility } = props.row.original
 				return (
@@ -160,7 +166,6 @@ const ProductTable = () => {
 		{
 			Header: 'Precio',
 			accessor: 'price',
-			sortable: true,
 			Cell: props => {
 				const { price } = props.row.original
 				return (
@@ -181,10 +186,10 @@ const ProductTable = () => {
 				// 3. Renderizas tu Badge con la etiqueta y color
 				return (
 					<div
-					className={`rounded-md font-semibold flex items-center justify-center ${stockBadge.className}`}
-				  >
-					{stockBadge.label}
-				  </div>
+						className={`rounded-md font-semibold flex items-center justify-center ${stockBadge.className}`}
+					>
+						{stockBadge.label}
+					</div>
 				)
 			},
 		},
@@ -220,39 +225,38 @@ const ProductTable = () => {
 			},
 		},
 		{
-			Header: 'Fecha de Vencimiento',
+			Header: 'Fecha Vencimiento',
 			accessor: 'expirationDate',
-			sortable: true,
 			Cell: (props) => {
-			  const { expirationDate, hasExpiration } = props.row.original
-		  
-			  // Si el producto no requiere fecha de vencimiento
-			  if (!hasExpiration) {
-				return ''
-			  }
-		  
-			  // Convertir la fecha a objeto Date
-			  const dateValue = new Date(expirationDate)
-			  // Fecha actual (solo día, mes, año):
-			  const today = new Date()
-			  today.setHours(0, 0, 0, 0)
-		  
-			  // Revisar si está vencido
-			  const isExpired = dateValue < today
-		  
-			  // Clases Tailwind para darle estilo
-			  const baseClasses = 'px-2 py-1 rounded-md font-semibold'
-			  const expiredClasses = 'text-red-600 bg-red-100'
-			  const validClasses = 'text-green-600 bg-green-100'
-		  
-			  return (
-				<span className={`${baseClasses} ${isExpired ? expiredClasses : validClasses}`}>
-				  {expirationDate}
-				</span>
-			  )
+				const { expirationDate, hasExpiration } = props.row.original
+
+				// Si el producto no requiere fecha de vencimiento
+				if (!hasExpiration) {
+					return ''
+				}
+
+				// Convertir la fecha a objeto Date
+				const dateValue = new Date(expirationDate)
+				// Fecha actual (solo día, mes, año):
+				const today = new Date()
+				today.setHours(0, 0, 0, 0)
+
+				// Revisar si está vencido
+				const isExpired = dateValue < today
+
+				// Clases Tailwind para darle estilo
+				const baseClasses = 'px-2 py-1 rounded-md font-semibold'
+				const expiredClasses = 'text-red-600 bg-red-100'
+				const validClasses = 'text-green-600 bg-green-100'
+
+				return (
+					<span className={`${baseClasses} ${isExpired ? expiredClasses : validClasses}`}>
+						{expirationDate}
+					</span>
+				)
 			}
-		  },
-		  
+		},
+
 
 		{
 			Header: 'Acciones',
@@ -273,6 +277,7 @@ const ProductTable = () => {
 				pagingData={tableData}
 				tableTools={<ProductTableTools />}
 				title="Productos"
+				className="table"
 			/>
 			<ProductDeleteConfirmation />
 		</>

@@ -33,19 +33,22 @@ const validationSchema = Yup.object().shape({
     stock: Yup.number()
         .required('Stock es requerido')
         .integer('Por favor ingrese un número entero'),
+    description: Yup.string()  // Nueva validación para la descripción
+        .notRequired()
+        .max(500, 'La descripción no puede exceder los 500 caracteres'),
     hasExpiration: Yup.boolean().notRequired(),
     expirationDate: Yup.string()
-    .when('hasExpiration', {
-      is: true,
-      then: (s) =>
-        s.required('Fecha de expiración requerida')
-         .matches(/^\d{4}-\d{2}-\d{2}$/, 'Formato YYYY‑MM‑DD'),
-      otherwise: (s) => s.notRequired().nullable(),
-    }),
+        .when('hasExpiration', {
+            is: true,
+            then: (s) =>
+                s.required('Fecha de expiración requerida')
+                    .matches(/^\d{4}-\d{2}-\d{2}$/, 'Formato YYYY‑MM‑DD'),
+            otherwise: (s) => s.notRequired().nullable(),
+        }),
     stockMin: Yup.number()
         .required('Stock mínimo es requerido')
         .integer('Por favor ingrese un número entero'),
-     imageUrl: Yup.string(). nullable().notRequired(),
+    imageUrl: Yup.string().nullable().notRequired(),
     subcategoryId: Yup.string()
         .required('Por favor seleccione subcategoría'),
     brandId: Yup.string()
@@ -82,7 +85,7 @@ const ProductForm = forwardRef((props, ref) => {
                 onSubmit={(values, { setSubmitting }) => {
                     if (values.typeAction === 'create' && values.imgList.length > 0) {
                         values.imageUrl = values.imgList[0].img
-                      }
+                    }
                     if (typeAction === 'edit') {
                         delete values.id
                     }
@@ -109,7 +112,7 @@ const ProductForm = forwardRef((props, ref) => {
                                     <OrganizationFields touched={touched} errors={errors} values={values} />
                                 </div>
                                 <div className="lg:col-span-1">
-                                     <ProductImages touched={touched} errors={errors} values={values} />
+                                    <ProductImages touched={touched} errors={errors} values={values} />
                                 </div>
                             </div>
                             <StickyFooter
@@ -128,7 +131,7 @@ const ProductForm = forwardRef((props, ref) => {
                                     >
                                         Descartar
                                     </Button>
-                                    <Button 
+                                    <Button
                                         size="md"
                                         variant="solid"
                                         loading={false}
@@ -161,9 +164,12 @@ ProductForm.defaultProps = {
         subcategoryId: '',
         brandId: '',
         unitId: '',
-        imageUrl:'',
+        imageUrl: '',
         hasExpiration: false,      // ← booleano
-        expirationDate: ''         // ← string ISO (YYYY‑MM‑DD) o ''
+        expirationDate: '',        // ← string ISO (YYYY‑MM‑DD) o ''
+        description: '',  // Agregado
+
+        
 
     },
     typeAction: 'create'
