@@ -13,6 +13,8 @@ const BasicInfoFields = ({ control, errors, setValue, watch, resetField }) => {
     const dispatch = useDispatch()
 
     const customerList = useSelector((state) => state.saleForm.data.customerList)
+    console.log('datos de cliente', customerList);
+
     const enterpriseList = useSelector((state) => state.saleForm.data.enterpriseList)
     const configData = useSelector((state) => state.saleForm.data.configData)
 
@@ -32,6 +34,9 @@ const BasicInfoFields = ({ control, errors, setValue, watch, resetField }) => {
         }
     })
 
+      const mergedOptions = [...customerOptions, ...enterpriseOptions]
+
+
     useEffect(() => {
         const handleGetConfig = async () => {
             const res = await dispatch(getConfig())
@@ -44,7 +49,7 @@ const BasicInfoFields = ({ control, errors, setValue, watch, resetField }) => {
     useEffect(() => {
         resetField('client')
 
-        if(watchType === 'Ticket') {
+        if (watchType === 'Ticket') {
             setValue('number', configData?.ticketNum)
         }
 
@@ -79,7 +84,7 @@ const BasicInfoFields = ({ control, errors, setValue, watch, resetField }) => {
                             vertical
                         >
                             <Radio value="Ticket">Ticket</Radio>
-                            <Radio value="Boleta">Boleta</Radio>
+
                             <Radio value="Factura">Factura</Radio>
                         </Radio.Group>
                     )}
@@ -161,7 +166,7 @@ const BasicInfoFields = ({ control, errors, setValue, watch, resetField }) => {
                         render={({ field: { onChange, value } }) => (
                             <Select
                                 placeholder="Seleccione un cliente..."
-                                options={watchType === 'Boleta' ? customerOptions : enterpriseOptions}
+                                options={watchType === 'Factura' ? mergedOptions :  enterpriseOptions}
                                 value={value}
                                 onChange={onChange}
                             />

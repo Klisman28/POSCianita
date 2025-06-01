@@ -3,6 +3,7 @@ import { apiGetCustomers } from 'services/client/CustomerService'
 import { apiGetEnterprises } from 'services/client/EnterpriseService'
 import { apiGetConfigs } from 'services/transaction/ConfigService'
 import { apiSearchProducts } from 'services/catalogue/ProductService'
+import { apiGetNextTicket } from 'services/transaction/TicketService'
 
 export const getCustomers = createAsyncThunk(
     'transaction/sales/getCustomers',
@@ -36,6 +37,16 @@ export const getConfig = createAsyncThunk(
     }
 )
 
+// Nuevo thunk para el siguiente ticket
+export const getNextTicket = createAsyncThunk(
+    'transaction/sales/getNextTicket',
+    async () => {
+        const response = await apiGetNextTicket()
+        // el backend responde { numero: <n> }
+        return response.data.numero
+    }
+)
+// —————————————————————————————————————
 const newSlice = createSlice({
     name: 'transaction/sales/data',
     initialState: {
@@ -57,6 +68,9 @@ const newSlice = createSlice({
         },
         [searchProducts.fulfilled]: (state, action) => {
             state.productList = action.payload.data
+        },
+        [getNextTicket.fulfilled]: (state, action) => {
+            state.nextTicket = action.payload
         },
     }
 })

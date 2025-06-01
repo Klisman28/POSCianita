@@ -48,8 +48,8 @@ const validationSchema = Yup.object().shape({
     number: Yup.string()
         .required("Número es requerido")
         .matches(/[0-9]/, { message: "Número solo admite números" })
-        .min(6, "Número demasiado corto")
-        .max(6, "Número demasiado largo"),
+        .min(1, "Número demasiado corto")
+        .max(3, "Número demasiado largo"),
     type: Yup.string().required("Tipo de comprobante es requerido"),
     client: Yup.object().when('type', {
         is: (val) => val !== "Ticket",
@@ -73,6 +73,13 @@ const SaleForm = (props) => {
     // Ejemplo de data que quisieras imprimir
    
     // Inicializamos react-hook-form
+      const handleSaveAndIncrement = (data) => {
+    // Primero ejecutamos la lógica original de guardado
+    onFormSubmit(data);
+
+    // Luego incrementamos el ticket para la próxima vez
+    incrementarTicket(setValue, data.number);
+  };
     const {
         formState: { errors },
         handleSubmit,
@@ -146,7 +153,12 @@ const SaleForm = (props) => {
         content: () => printRef.current,
       })
 
-
+function incrementarTicket(setValue, numeroActual) {
+    // Convierte a número, suma 1, y vuelve a formatear con ceros a la izquierda (mínimo 5 dígitos)
+    const siguiente = String(Number(numeroActual) + 1).padStart(String(numeroActual).length, '0')
+    setValue('number', siguiente)
+}
+      
       const onClickPrint = () => {
         const data = getValues()
         // data.serie, data.number, data.client, etc.
@@ -174,7 +186,7 @@ const SaleForm = (props) => {
     
       
     return (
-        <form onSubmit={handleSubmit(onFormSubmit)} >
+        <form onSubmit={handleSubmit(handleSaveAndIncrement)} >
             <FormContainer className="mx-auto p-0 m-0 max-w-full">
                 {/* Contenedor principal con varias columnas */}
                 <div className="lg:flex lg:gap-6">

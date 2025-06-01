@@ -59,7 +59,7 @@ const MobileNav = () => {
 						<MobileNavToggle toggled={isOpen} />
 					</div>
 					<Drawer
-						title="Navigation"
+						title="Menu"
 						isOpen={isOpen}
 						onClose={onDrawerClose}
 						onRequestClose={onDrawerClose}
