@@ -4,6 +4,7 @@ import {
     NAV_ITEM_TYPE_ITEM
 } from 'constants/navigation.constant'
 
+
 const navigationConfig = [
     {
         key: 'home',
@@ -22,7 +23,7 @@ const navigationConfig = [
         translateKey: 'nav.home',
         icon: 'supplierIcon',
         type: NAV_ITEM_TYPE_TITLE,
-        authority: [],
+        authority: ['ADMIN'],
         subMenu: [
             {
                 key: 'warehouseMenu.purchases',
@@ -31,7 +32,7 @@ const navigationConfig = [
                 translateKey: 'nav.catalogueMenu.products',
                 icon: 'purchasesIcon',
                 type: NAV_ITEM_TYPE_ITEM,
-                authority: [],
+                authority: ['ADMIN'],
                 subMenu: []
             },
             {
@@ -41,7 +42,7 @@ const navigationConfig = [
                 translateKey: 'nav.catalogueMenu.products',
                 icon: 'cashiersIcon',
                 type: NAV_ITEM_TYPE_ITEM,
-                authority: [],
+                authority: ['ADMIN'],
                 subMenu: []
             },
             // {
@@ -63,7 +64,7 @@ const navigationConfig = [
         translateKey: 'nav.home',
         icon: 'transactionIcon',
         type: NAV_ITEM_TYPE_TITLE,
-        authority: [],
+        authority: ['CAJERO','ADMIN'],
         subMenu: [
             {
                 key: 'transactionMenu.openings',
@@ -72,7 +73,7 @@ const navigationConfig = [
                 translateKey: 'nav.catalogueMenu.products',
                 icon: 'openingsIcon',
                 type: NAV_ITEM_TYPE_ITEM,
-                authority: [],
+                authority: ['CAJERO','ADMIN'],
                 subMenu: []
             },
             {
@@ -82,7 +83,7 @@ const navigationConfig = [
                 translateKey: 'nav.catalogueMenu.products',
                 icon: 'salesOpeningIcon',
                 type: NAV_ITEM_TYPE_ITEM,
-                authority: [],
+                authority: ['CAJERO','ADMIN'],
                 subMenu: []
             },
             {
@@ -92,7 +93,7 @@ const navigationConfig = [
                 translateKey: 'nav.catalogueMenu.products',
                 icon: 'salesOpeningNewIcon',
                 type: NAV_ITEM_TYPE_ITEM,
-                authority: [],
+                authority: ['CAJERO','ADMIN'],
                 subMenu: []
             },
             {
@@ -102,7 +103,7 @@ const navigationConfig = [
                 translateKey: 'nav.catalogueMenu.products',
                 icon: 'salesReportIcon',
                 type: NAV_ITEM_TYPE_ITEM,
-                authority: [],
+                authority: ['ADMIN'],
                 subMenu: []
             },
             {
@@ -112,7 +113,7 @@ const navigationConfig = [
                 translateKey: 'nav.catalogueMenu.products',
                 icon: 'configsIcon',
                 type: NAV_ITEM_TYPE_ITEM,
-                authority: [],
+                authority: ['ADMIN'],
                 subMenu: []
             },
         ]
@@ -124,7 +125,7 @@ const navigationConfig = [
         translateKey: 'nav.groupMenu.groupMenu',
         icon: 'catalogueIcon',
         type: NAV_ITEM_TYPE_TITLE,
-        authority: [],
+        authority: ['ADMIN'],
         subMenu: [
             {
                 key: 'catalogueMenu.products',
@@ -133,7 +134,7 @@ const navigationConfig = [
                 translateKey: 'nav.catalogueMenu.products',
                 icon: 'productsIcon',
                 type: NAV_ITEM_TYPE_ITEM,
-                authority: [],
+                authority: ['ADMIN'],
                 subMenu: []
             },
             {
@@ -143,7 +144,7 @@ const navigationConfig = [
                 translateKey: 'nav.catalogueMenu.categories',
                 icon: 'categoriesIcon',
                 type: NAV_ITEM_TYPE_ITEM,
-                authority: [],
+                authority: ['ADMIN'],
                 subMenu: []
             },
             {
@@ -153,7 +154,7 @@ const navigationConfig = [
                 translateKey: 'nav.catalogueMenu.subcategories',
                 icon: 'subcategoriesIcon',
                 type: NAV_ITEM_TYPE_ITEM,
-                authority: [],
+                authority: ['ADMIN'],
                 subMenu: []
             },
             {
@@ -163,7 +164,7 @@ const navigationConfig = [
                 translateKey: 'nav.catalogueMenu.products',
                 icon: 'brandsIcon',
                 type: NAV_ITEM_TYPE_ITEM,
-                authority: [],
+                authority: ['ADMIN'],
                 subMenu: []
             }
         ]
@@ -175,16 +176,16 @@ const navigationConfig = [
         translateKey: 'nav.groupMenu.groupMenu',
         icon: 'groupsIcon',
         type: NAV_ITEM_TYPE_TITLE,
-        authority: [],
+        authority: ['ADMIN'],
         subMenu: [
             {
                 key: 'clientMenu.customers',
                 path: '/cliente/personas',
-                title: 'Personas',
+                title: 'Clientes',
                 translateKey: 'nav.catalogueMenu.products',
                 icon: 'customersIcon',
                 type: NAV_ITEM_TYPE_ITEM,
-                authority: [],
+                authority: ['ADMIN'],
                 subMenu: []
             },
             {
@@ -194,7 +195,7 @@ const navigationConfig = [
                 translateKey: 'nav.catalogueMenu.categories',
                 icon: 'enterprisesIcon',
                 type: NAV_ITEM_TYPE_ITEM,
-                authority: [],
+                authority: ['ADMIN'],
                 subMenu: []
             }
         ]
@@ -206,7 +207,7 @@ const navigationConfig = [
         translateKey: 'nav.groupMenu.groupMenu',
         icon: 'bisIcon',
         type: NAV_ITEM_TYPE_TITLE,
-        authority: [],
+        authority: ['ADMIN'],
         subMenu: [
             {
                 key: 'organizationMenu.employees',
@@ -215,7 +216,7 @@ const navigationConfig = [
                 translateKey: 'nav.catalogueMenu.products',
                 icon: 'employeesIcon',
                 type: NAV_ITEM_TYPE_ITEM,
-                authority: [],
+                authority: ['ADMIN'],
                 subMenu: []
             },
             {
@@ -225,7 +226,7 @@ const navigationConfig = [
                 translateKey: 'nav.catalogueMenu.categories',
                 icon: 'suppliersIcon',
                 type: NAV_ITEM_TYPE_ITEM,
-                authority: [],
+                authority: ['ADMIN'],
                 subMenu: []
             },
             {
@@ -235,7 +236,7 @@ const navigationConfig = [
                 translateKey: 'nav.catalogueMenu.categories',
                 icon: 'usersIcon',
                 type: NAV_ITEM_TYPE_ITEM,
-                authority: [],
+                authority: ['ADMIN'],
                 subMenu: []
             },
             {
@@ -245,7 +246,7 @@ const navigationConfig = [
                 translateKey: 'nav.catalogueMenu.categories',
                 icon: 'salesOpeningNewIcon',
                 type: NAV_ITEM_TYPE_ITEM,
-                authority: [],
+                authority: ['ADMIN'],
                 subMenu: []
             }
         ]

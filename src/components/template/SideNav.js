@@ -2,17 +2,18 @@ import React from 'react'
 import classNames from 'classnames'
 import { ScrollBar } from 'components/ui'
 import PropTypes from 'prop-types'
-import { 
+import {
 	SIDE_NAV_WIDTH,
 	SIDE_NAV_COLLAPSED_WIDTH,
-	NAV_MODE_DARK, 
-	NAV_MODE_THEMED, 
+	NAV_MODE_DARK,
+	NAV_MODE_THEMED,
 	NAV_MODE_TRANSPARENT,
 	SIDE_NAV_CONTENT_GUTTER,
 	LOGO_X_GUTTER,
 } from 'constants/theme.constant'
 import Logo from 'components/template/Logo'
 import navigationConfig from 'configs/navigation.config'
+import { filterByAuthority } from '../../utils/navigationFilter'
 import VerticalMenuContent from 'components/template/VerticalMenuContent'
 import useResponsive from 'utils/hooks/useResponsive'
 import { useSelector } from 'react-redux'
@@ -37,43 +38,49 @@ const SideNav = () => {
 	const currentRouteKey = useSelector(state => state.base.common.currentRouteKey)
 	const sideNavCollapse = useSelector(state => state.theme.layout.sideNavCollapse)
 	const userAuthority = useSelector((state) => state.auth.user.authority)
+	const filteredNavigation = filterByAuthority(navigationConfig, userAuthority)
 
 	const { larger } = useResponsive()
 
 	const sideNavColor = () => {
-		if(navMode === NAV_MODE_THEMED) {
+		if (navMode === NAV_MODE_THEMED) {
 			return `bg-${themeColor}-${primaryColorLevel} side-nav-${navMode}`
 		}
 		return `side-nav-${navMode}`
 	}
 
 	const logoMode = () => {
-		if(navMode === NAV_MODE_THEMED) {
+		if (navMode === NAV_MODE_THEMED) {
 			return NAV_MODE_DARK
 		}
 
-		if(navMode === NAV_MODE_TRANSPARENT) {
+		if (navMode === NAV_MODE_TRANSPARENT) {
 			return mode
 		}
 
 		return navMode
 	}
 
+
+
 	const menuContent = (
+
 		<VerticalMenuContent
-			navMode={navMode} 
+			navMode={navMode}
 			collapsed={sideNavCollapse}
-			navigationTree={navigationConfig}
+			navigationTree={filteredNavigation}
 			routeKey={currentRouteKey}
 			userAuthority={userAuthority}
+
+
 		/>
 	)
 
 	return (
 		<>
 			{larger.md && (
-				<div 
-					style={sideNavCollapse ? sideNavCollapseStyle : sideNavStyle } 
+				<div
+					style={sideNavCollapse ? sideNavCollapseStyle : sideNavStyle}
 					className={
 						classNames(
 							'side-nav',
@@ -83,22 +90,21 @@ const SideNav = () => {
 					}
 				>
 					<div className="side-nav-header py-2">
-						<Logo 
-							mode={logoMode()} 
-							type={sideNavCollapse ? 'streamline' : 'full'} 
-							gutter={sideNavCollapse ? SIDE_NAV_CONTENT_GUTTER : LOGO_X_GUTTER} 
+						<Logo
+							mode={logoMode()}
+							type={sideNavCollapse ? 'streamline' : 'full'}
+							gutter={sideNavCollapse ? SIDE_NAV_CONTENT_GUTTER : LOGO_X_GUTTER}
 						/>
-						{/* HCS PERU */}
 					</div>
 					{
 						sideNavCollapse ?
-						menuContent
-						:
-						<div className="side-nav-content">
-							<ScrollBar autoHide direction={direction}>
-								{menuContent}
-							</ScrollBar>
-						</div>
+							menuContent
+							:
+							<div className="side-nav-content">
+								<ScrollBar autoHide direction={direction}>
+									{menuContent}
+								</ScrollBar>
+							</div>
 					}
 				</div>
 			)}
@@ -108,7 +114,7 @@ const SideNav = () => {
 
 SideNav.propTypes = {
 	themed: PropTypes.bool,
-	darkMode: PropTypes.bool, 
+	darkMode: PropTypes.bool,
 	themeColor: PropTypes.string
 }
 

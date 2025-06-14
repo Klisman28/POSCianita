@@ -133,7 +133,7 @@ const VerticalMenuContent = props => {
 			style={{ border: 'none' }}      // Sobrescritura adicional (por si hace falta)
 			variant={navMode}
 			sideCollapsed={collapsed}
-			defaultActiveKeys={activedRoute?.key ? [activedRoute.key] : []}
+			defaultActiveKeys={activedRoute ? [activedRoute.key] : []}
 		>
 			{navigationTree.map(nav => getNavItem(nav))}
 		</Menu>

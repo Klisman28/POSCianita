@@ -6,6 +6,8 @@ import { apiGetSales } from '../services/transaction/SaleService';
 
 const Home = () => {
   const salesData = useSelector((state) => state.auth.user);
+  console.log('Datos user',salesData);
+  
   const [salesList, setSalesList] = useState([]);
 
   // Estado para configurar los datos del gráfico

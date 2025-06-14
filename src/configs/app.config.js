@@ -1,6 +1,6 @@
 const appConfig = {
     
-  // apiDomain: 'https://backendcianita.onrender.com',
+  //apiDomain: 'https://backendcianita.onrender.com',
     apiDomain: 'http://localhost:3000',
     apiPrefix: '/api',
     apiVersion: '/v1',
