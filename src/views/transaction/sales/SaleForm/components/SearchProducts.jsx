@@ -13,7 +13,7 @@ import { toast, Notification } from 'components/ui'
 export const SearchProducts = ({ handleAppendProduct, children }) => {
 
     const [searchDialogOpen, setSearchDialogOpen] = useState(false)
-        const [productCode, setProductCode] = useState("") // Variable para el código del producto
+    const [productCode, setProductCode] = useState("") // Variable para el código del producto
     const productList = useSelector((state) => state.saleForm.data.productList)
 
     const dispatch = useDispatch()
@@ -30,10 +30,10 @@ export const SearchProducts = ({ handleAppendProduct, children }) => {
     }
 
     const handleMultipleChanges = (e) => {
-    handleSearch(e); // La función original
-    // Aquí puedes agregar cualquier otra función que necesites
-    handleCodeInput(e); // Otra función adicional
-};
+        handleSearch(e); // La función original
+        // Aquí puedes agregar cualquier otra función que necesites
+        handleCodeInput(e); // Otra función adicional
+    };
     const handleSearch = (e) => {
         debounceFn(e.target.value)
     }
@@ -45,7 +45,7 @@ export const SearchProducts = ({ handleAppendProduct, children }) => {
         }
     }, [searchDialogOpen])
 
-      const handleCodeInput = (e) => {
+    const handleCodeInput = (e) => {
         const code = e.target.value
         setProductCode(code)
 
@@ -137,20 +137,28 @@ export const SearchProducts = ({ handleAppendProduct, children }) => {
                                 {/* Información del producto */}
                                 <div className="flex flex-col sm:flex-row sm:items-center justify-between w-full">
                                     <div>
-                                        <Highlighter
-                                            autoEscape
-                                            highlightClassName={classNames(
-                                                textTheme,
-                                                'underline bg-transparent font-semibold dark:text-white'
-                                            )}
-                                            searchWords={[inputRef.current?.value || '']}
-                                            textToHighlight={product.name}
-                                        />
+                                        <div className='flex items-center gap-2'>
+                                            <Highlighter
+                                                autoEscape
+                                                highlightClassName={classNames(
+                                                    textTheme,
+                                                    'underline bg-transparent font-semibold dark:text-white'
+                                                )}
+                                                searchWords={[inputRef.current?.value || '']}
+                                                textToHighlight={product.name}
+                                            />
+                                            {/* Ícono de carrito */}
+                                            <HiShoppingCart className={classNames(textTheme, 'text-lg')} />
+
+
+                                        </div>
+
                                         <div className="flex items-center mt-1 text-sm">
                                             <Badge className="bg-blue-600 mr-2" />
                                             <span className="capitalize text-gray-700 dark:text-gray-300 font-medium">
                                                 {product.brand.name}
                                             </span>
+
                                         </div>
                                     </div>
 
@@ -169,10 +177,11 @@ export const SearchProducts = ({ handleAppendProduct, children }) => {
                                                 Agotado
                                             </Tag>
                                         )}
+                                        <span className="text-gray-900 dark:text-gray-100 font-medium">
+                                            Q {product.description}
+                                        </span>
                                     </div>
 
-                                    {/* Ícono de carrito */}
-                                    <HiShoppingCart className={classNames(textTheme, 'text-lg')} />
                                 </div>
                             </div>
                         ))}

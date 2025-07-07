@@ -1,6 +1,7 @@
 const appConfig = {
     
-  apiDomain: 'https://backendcianita.onrender.com',
+ // apiDomain: 'https://backendcianita.onrender.com',
+ apiDomain: 'https://tiendapalacios.shop',
     //apiDomain: 'http://localhost:3000',
     apiPrefix: '/api',
     apiVersion: '/v1',

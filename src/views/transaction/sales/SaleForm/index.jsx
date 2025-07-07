@@ -141,7 +141,8 @@ const SaleForm = (props) => {
                 quantity: 1,
                 price: parseFloat(product.price),
                 subtotal: parseFloat(product.price),
-                stock: parseInt(product.stock)
+                stock: parseInt(product.stock),
+                description: product.description
             })
         } else {
             // Si ya existe, incrementamos la cantidad
